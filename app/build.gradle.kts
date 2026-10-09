@@ -12,13 +12,28 @@ android {
         applicationId = "app.mossling"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0"
+        // The release workflow passes the tag and run number so each published APK upgrades the last.
+        versionCode = System.getenv("MOSSLING_VERSION_CODE")?.toInt() ?: 1
+        versionName = System.getenv("MOSSLING_VERSION_NAME") ?: "0.1.0"
+    }
+
+    // Release signing key comes from GitHub secrets (see .github/workflows/release.yml).
+    val keystore = System.getenv("MOSSLING_KEYSTORE")
+    signingConfigs {
+        if (keystore != null) {
+            create("release") {
+                storeFile = file(keystore)
+                storePassword = System.getenv("MOSSLING_KEY_PASSWORD")
+                keyAlias = "mossling"
+                keyPassword = System.getenv("MOSSLING_KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (keystore != null) signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {

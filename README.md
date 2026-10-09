@@ -24,14 +24,14 @@ It's built on the design findings in the virtual-companion research brief:
 
 Android lets you read screen time with the free `PACKAGE_USAGE_STATS` permission, so no paid
 developer account is needed. (iOS's Screen Time API needs Apple's Family Controls entitlement and
-a paid developer account, so this version is Android only.)
+a paid developer account, so the iPhone version below uses a quick daily check-in instead.)
 
-1. Open this repo's **Actions** tab on GitHub, select the latest **Build APK** run, and download
-   the `mossling-debug-apk` artifact (a zip containing `app-debug.apk`).
-2. Copy the APK to your phone and open it. Allow "Install unknown apps" for your browser or file
-   manager when Android asks.
-3. In Mossling, tap **Open Usage access**, switch Mossling on, and come back.
-4. Pick your apps, choose the lowest daily budget you'd want, and plant Mossy.
+1. On your phone, download **https://github.com/ethanhku/app/releases/latest/download/mossling.apk**
+   and open it. Allow "Install unknown apps" for your browser when Android asks.
+2. In Mossling, tap **Open Usage access**, switch Mossling on, and come back.
+3. Pick your apps, choose the lowest daily budget you'd want, and plant Mossy.
+
+Updates install the same way, right over the old version, and keep your garden.
 
 Requires Android 8.0+. Everything stays on the phone: no account, no network, no analytics.
 
@@ -67,6 +67,14 @@ are a direct port of `core/`.
 Days are settled from the OS's own usage history, so Mossy is never penalised for the app
 being closed or the background check being delayed by battery saver. Android keeps that history
 for about a week, so after a longer absence only the last 7 days are settled.
+
+## Publishing a new Android version
+
+Push a tag (`git tag v0.1.1 && git push origin v0.1.1`) or run **Release APK** from the Actions
+tab. It builds `mossling.apk`, signs it with the key in the `MOSSLING_KEYSTORE_BASE64` and
+`MOSSLING_KEY_PASSWORD` repository secrets, and publishes it as the latest GitHub Release.
+Keep a copy of that key: every update must be signed with it, or phones won't install it over
+the old version.
 
 ## Building locally
 
