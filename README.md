@@ -43,7 +43,7 @@ you log each day yourself: open **Settings › Screen Time › See All App & Web
 the day, and type in the minutes for your picked apps (about 10 seconds). Days you can't check
 are skipped and don't affect your streak or budget.
 
-**Install:** open **https://ethanhku.github.io/mossling/** in Safari on your iPhone, tap Share ›
+**Install:** open **https://ethanhku.github.io/app/** in Safari on your iPhone, tap Share ›
 **Add to Home Screen**, and open Mossling from its icon. It works offline. Your garden is
 stored on the phone; use Settings › **Copy backup code** now and then and keep the code in Notes,
 so you can restore it on a new phone.
