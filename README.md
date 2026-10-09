@@ -35,6 +35,18 @@ a paid developer account, so this version is Android only.)
 
 Requires Android 8.0+. Everything stays on the phone: no account, no network, no analytics.
 
+## iPhone version (free, no Mac needed)
+
+`web/mossling.html` is the same Mossy, budgets, rest days, quiet time and keepsakes as a web
+app for iPhone. Apple only lets apps read Screen Time with a paid developer account, so instead
+you log each day yourself: open **Settings › Screen Time › See All App & Website Activity**, tap
+the day, and type in the minutes for your picked apps (about 10 seconds). Days you can't check
+are skipped and don't affect your streak or budget.
+
+It's published as a private claude.ai page. Open it in Safari, then tap Share › **Add to Home
+Screen**. Your garden is saved to your Claude account, with a copy on the device as a backup.
+The rules in its `<script id="rules">` block are a direct port of `core/`.
+
 ## How it works
 
 - `core/`: the rules engine in plain Kotlin with JVM unit tests: usage math, adaptive budget,
