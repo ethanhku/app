@@ -253,7 +253,16 @@ details[open] summary { margin-bottom: 12px; }
           <input id="floorEdit" type="range" min="5" max="180" step="5" aria-label="Lowest daily budget in minutes">
           <p class="small muted" id="settingsInfo"></p>
           <button id="settingsSave">Save settings</button>
-          <p class="small muted">Add to your Home Screen: tap Share in Safari, then <b>Add to Home Screen</b>. Your garden is saved to your Claude account, so it follows you across devices.</p>
+          <p class="small muted">Add to your Home Screen: tap Share in Safari, then <b>Add to Home Screen</b>. <span id="storageNote">Your garden is saved on this device.</span></p>
+          <div class="row">
+            <button id="backupCopy" class="ghost grow">Copy backup code</button>
+            <button id="backupShow" class="ghost grow">Restore</button>
+          </div>
+          <div id="restoreBox" class="stack" hidden>
+            <label for="restoreInput">Paste a backup code</label>
+            <textarea id="restoreInput" rows="3" autocomplete="off" spellcheck="false"></textarea>
+            <button id="restoreGo">Restore this garden</button>
+          </div>
           <button id="resetAsk" class="text" style="color: var(--muted)">Start over</button>
           <div id="resetConfirm" class="row" hidden>
             <p class="small grow">Erase Mossy and all sunlight?</p>
@@ -507,6 +516,7 @@ async function connectAccount() {
     const snap = await ref.get();
     const remote = snap.exists ? JSON.parse(snap.data().json) : null;
     dbRef = ref;
+    $("storageNote").textContent = "Your garden is saved to your Claude account, so it follows you across devices.";
     if (remote && (!state || (remote.updated || 0) >= (state.updated || 0))) {
       state = remote; writeLocal(state); route();
     } else if (state) {
@@ -702,6 +712,20 @@ $("settingsSave").onclick = () => {
   state.apps = $("appsEdit").value.trim();
   state.garden = { ...g, floorMin: floor, budgetMin: Math.max(g.budgetMin, floor), baselineMin: Math.max(g.baselineMin, floor) };
   save(); $("settings").open = false; render(); toast("Settings saved.");
+};
+$("backupCopy").onclick = async () => {
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  try { await navigator.clipboard.writeText(code); toast("Backup code copied. Keep it in Notes."); }
+  catch { $("restoreBox").hidden = false; $("restoreInput").value = code; $("restoreInput").select(); toast("Copy the selected code and keep it in Notes."); }
+};
+$("backupShow").onclick = () => { $("restoreBox").hidden = !$("restoreBox").hidden; $("restoreInput").value = ""; };
+$("restoreGo").onclick = () => {
+  try {
+    const s = JSON.parse(decodeURIComponent(escape(atob($("restoreInput").value.trim()))));
+    if (!s?.garden || typeof s.garden.sunlight !== "number" || !Array.isArray(s.garden.history)) throw new Error("bad");
+    state = s; save(); $("restoreBox").hidden = true; $("settings").open = false; route();
+    toast("Garden restored.");
+  } catch { toast("That code didn't work. Paste the whole backup code and try again."); }
 };
 $("resetAsk").onclick = () => { $("resetConfirm").hidden = false; };
 $("resetNo").onclick = () => { $("resetConfirm").hidden = true; };

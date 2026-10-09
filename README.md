@@ -43,9 +43,15 @@ you log each day yourself: open **Settings › Screen Time › See All App & Web
 the day, and type in the minutes for your picked apps (about 10 seconds). Days you can't check
 are skipped and don't affect your streak or budget.
 
-It's published as a private claude.ai page. Open it in Safari, then tap Share › **Add to Home
-Screen**. Your garden is saved to your Claude account, with a copy on the device as a backup.
-The rules in its `<script id="rules">` block are a direct port of `core/`.
+**Install:** open **https://ethanhku.github.io/mossling/** in Safari on your iPhone, tap Share ›
+**Add to Home Screen**, and open Mossling from its icon. It works offline. Your garden is
+stored on the phone; use Settings › **Copy backup code** now and then and keep the code in Notes,
+so you can restore it on a new phone.
+
+The site is built from `web/mossling.html` by `scripts/build-web.mjs` and deployed to GitHub
+Pages by `.github/workflows/pages.yml`. The same file is also published as a claude.ai page,
+where the garden is saved to your Claude account. The rules in its `<script id="rules">` block
+are a direct port of `core/`.
 
 ## How it works
 
